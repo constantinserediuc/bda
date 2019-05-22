@@ -1,7 +1,7 @@
 from __future__ import print_function
 from os import environ
 
-environ['PYSPARK_PYTHON'] = '/usr/bin/python3.6'
+# environ['PYSPARK_PYTHON'] = '/usr/bin/python3.6'
 
 import sys
 import operator

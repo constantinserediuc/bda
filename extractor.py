@@ -1,7 +1,7 @@
 from os import environ
 
 environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.databricks:spark-xml_2.11:0.5.0 pyspark-shell'
-environ['PYSPARK_PYTHON'] = '/usr/bin/python3.6'
+# environ['PYSPARK_PYTHON'] = '/usr/bin/python3.6'
 
 from pyspark.sql import SparkSession
 from bs4 import BeautifulSoup # pip install beautifulsoup4

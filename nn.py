@@ -1,7 +1,8 @@
 from __future__ import print_function
+
 from os import environ
 
-# environ['PYSPARK_PYTHON'] = '/usr/bin/python3.6'
+environ['PYSPARK_PYTHON'] = '/usr/bin/python3'
 
 import os
 import sys
@@ -76,7 +77,7 @@ def nn(text, summ, word_dict):
     # logger.warn(X_train.shape)
     # logger.warn(X_test.shape)
 
-    def generate_batch(X = X_train, y = y_train, batch_size = 128):
+    def generate_batch(X = X_train, y = y_train, batch_size = 1):
         ''' Generate a batch of data '''
         while True:
             for j in range(0, len(X), batch_size):
@@ -96,15 +97,15 @@ def nn(text, summ, word_dict):
                             # decoder_target_data[i, t - 1, word] = 1.
                 yield([encoder_input_data, decoder_input_data], decoder_target_data)
                 
-    latent_dim = 5
+    latent_dim = 50
 
 
     # Encoder
     encoder_inputs = Input(shape=(None,))
     enc_emb =  Embedding(int(num_encoder_tokens), int(latent_dim), mask_zero = True)(encoder_inputs)
     encoder_lstm = LSTM(latent_dim, return_state=True)
-    encoder_outputs, state_h, state_c = (enc_emb)
-    # We discard `encoder_outputs` and only encoder_lstmkeep the states.
+    encoder_outputs, state_h, state_c = encoder_lstm(enc_emb)
+    # We discard `encoder_outputs` and only keep the states.
     encoder_states = [state_h, state_c]
 
     # Set up the decoder, using `encoder_states` as initial state.
@@ -130,7 +131,7 @@ def nn(text, summ, word_dict):
     train_samples = len(X_train)
     val_samples = len(X_test)
     batch_size = 1
-    epochs = 10
+    epochs = 50
     
     if not os.path.exists("nmt_weights.h5"):
         model.fit_generator(generator = generate_batch(X_train, y_train, batch_size = batch_size),

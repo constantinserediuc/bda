@@ -1,7 +1,7 @@
 from __future__ import print_function
 from os import environ
 
-# environ['PYSPARK_PYTHON'] = '/usr/bin/python3.6'
+environ['PYSPARK_PYTHON'] = '/usr/bin/python3'
 
 import os
 import sys
@@ -20,7 +20,11 @@ def autoinc(a, b):
 def tokenize(a):
     global py_dict
     a = a.strip("\(\)\[\]\,\",\'").replace("\'", '').replace("\"", '').replace(',', '').split(' ')
+    # print(len(a))
+    # print(a[:10])
+    # print(list(py_dict.keys())[:10])
     tokens = [py_dict[elem] for elem in a if elem in py_dict]
+    # print(len(tokens))
     tokens.insert(0, '0')
     tokens.append('-1')
     return tokens

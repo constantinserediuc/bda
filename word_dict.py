@@ -1,7 +1,7 @@
 from __future__ import print_function
 from os import environ
 
-# environ['PYSPARK_PYTHON'] = '/usr/bin/python3.6'
+environ['PYSPARK_PYTHON'] = '/usr/bin/python3'
 
 import sys
 import operator
@@ -45,17 +45,23 @@ if __name__ == "__main__":
             .getOrCreate()
         lines = spark.read.text(sys.argv[1]).rdd.map(lambda r: r[0])
         counts = lines.flatMap(lambda x: x.strip("\[\]\(\)\,\",\'").replace("\'", '').replace("\"", '').replace(',', '').split(' ')) \
-                      .map(lambda x: (x, autoinc(1, 2))) \
-                      .reduceByKey(select)
+                      .map(lambda x: (x, 1)) \
+                      .reduceByKey(add)
         counts.saveAsTextFile("indexes")
         spark.stop()
     else:
-        dicts = open(sys.argv[1], 'r').readlines()
-        py_dict = add_to_dict(dicts)
-        logger.warn('total number of words: ' + str(len(py_dict)))
+        import os
+        items = os.listdir(sys.argv[1])
+
+        newlist = []
+        for name in items:
+            if name.startswith("part"):
+                dicts = open(os.path.join(sys.argv[1], name), 'r').readlines()
+                py_dict = add_to_dict(dicts)
+        logger.warn(len(py_dict))
         sorted_x = sorted(py_dict.items(), key=operator.itemgetter(1), reverse=True)[:int(sys.argv[2])]
         indexes = {"_START": 0, "_STOP": -1}
-        logger.warn('number of keeped words ' + str(len(sorted_x)))
+        print(len(sorted_x))
         for i in range(len(sorted_x)):
             indexes[sorted_x[i][0]] = i+1
             

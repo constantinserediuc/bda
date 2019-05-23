@@ -6,3 +6,5 @@ pandas
 pyspark==2.3.2
 nltk
 lxml
+matplotlib
+sklearn

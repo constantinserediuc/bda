@@ -8,6 +8,7 @@ import sys
 import json
 import logging
 from operator import index
+from ast import literal_eval as make_dict
 
 from pyspark.sql import SparkSession
 
@@ -51,13 +52,9 @@ if __name__ == "__main__":
         .getOrCreate()
 
     lines = spark.read.text(sys.argv[1]).rdd.map(lambda r: r[0])
-    # dicts = json.loads()
-    with open('new_dict.json') as data_file:
-        py_dict = json.load(data_file)
-    # logger.warn(len(dicts))
-    # py_dict = add_to_dict(dicts)
-    
-    # logger.warn(py_dict)
+    py_dict = spark.read.text(sys.argv[2]).rdd.map(lambda x:x['value']).collect()
+    py_dict = make_dict(py_dict[0])
+
     counts = lines.map(lambda x: x.split('], ['))
     counts = counts.map(lambda x: [tokenize(x[0]), tokenize(x[1])])
     counts.saveAsTextFile("txt_as_idx")

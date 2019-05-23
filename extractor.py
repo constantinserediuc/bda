@@ -6,7 +6,7 @@ import sys
 from pyspark.sql import SparkSession
 from bs4 import BeautifulSoup # pip install beautifulsoup4
 import nltk
-# nltk.download()
+nltk.download()
 import re
 import os
 from ast import literal_eval as make_tuple
@@ -79,3 +79,15 @@ if os.path.exists("words"):
 extractor = PubMedInformationExtractor()
 extractor.extract_abstract_and_contents(sys.argv[1])
 extractor.extract_words()
+
+# hadoop fs -put articles hdfs://bda-m/user/serediucctin/articles
+# python3 extractor.py articles
+#  python word_dict.py words 2000
+# 2. python word_dict.py indexes 2000
+# 3. python txt_to_index.py words word_dict
+# 4. python nn.py txt_as_idx word_dict
+
+
+# hadoop fs -rm -R hdfs://bda-m/user/serediucctin/text
+# hadoop fs -rm -R  hdfs://bda-m/user/serediucctin/words
+# hadoop fs -rm -R  hdfs://bda-m/user/serediucctin/indexes

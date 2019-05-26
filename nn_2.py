@@ -168,7 +168,7 @@ def nn(text, summ, word_dict):
             states_value = encoder_model.predict(input_seq)
             states_value = list(states_value[0][0])
             # print(states_value[0] * 6000)
-            result = [reverse_target_char_index[int(e)] for e in states_value if int(e) in reverse_target_char_index]
+            result = [reverse_target_char_index[int(e * 8000)] for e in states_value if int(e) in reverse_target_char_index]
             return result
             # Generate empty target sequence of length 1.
             target_seq = np.zeros((1,1))

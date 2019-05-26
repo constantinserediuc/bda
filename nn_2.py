@@ -1,5 +1,8 @@
 from __future__ import print_function
 
+from os import environ
+
+environ['PYSPARK_PYTHON'] = '/usr/bin/python3'
 import os
 import sys
 import json

@@ -79,14 +79,15 @@ if os.path.exists("words"):
 extractor = PubMedInformationExtractor()
 extractor.extract_abstract_and_contents(sys.argv[1])
 extractor.extract_words()
-
+# hadoop fs -mkdir  hdfs://bda-m/user/serediucctin
+# git clone https://github.com/constantinserediuc/bda.git
 # hadoop fs -put articles hdfs://bda-m/user/serediucctin/articles
 # python3 extractor.py articles
-#  python word_dict.py words 2000
-# 2. python word_dict.py indexes 2000
-# 3. python txt_to_index.py words word_dict
-# 4. python nn.py txt_as_idx word_dict
-
+#  python3 word_dict.py words 2000
+# 2. python3 word_dict.py indexes 2000
+# 3. python3 txt_to_index.py words word_dict
+# 4. python3 nn.py txt_as_idx word_dict
+# $HOME/.keras/keras.json
 
 # hadoop fs -rm -R hdfs://bda-m/user/serediucctin/text
 # hadoop fs -rm -R  hdfs://bda-m/user/serediucctin/words

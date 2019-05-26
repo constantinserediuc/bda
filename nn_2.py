@@ -5,6 +5,7 @@ from os import environ
 environ['PYSPARK_PYTHON'] = '/usr/bin/python3'
 import os
 import sys
+from ast import literal_eval as make_dict
 import json
 import logging
 import pandas as pd
@@ -261,9 +262,9 @@ if __name__ == "__main__":
     texts = [[int(x) for x in row['_1']] for row in counts.collect()]
     target = [[int(x) for x in row['_2']] for row in counts.collect()]
     # logger.warn(type(counts.head()), type(counts.collect()[0]))
-    
-    with open('new_dict.json') as data_file:
-        dicts = json.load(data_file)
+
+    dicts = spark.read.text(sys.argv[2]).rdd.map(lambda x: x['value']).collect()
+    dicts = make_dict(dicts[0])
     nn(texts, target, dicts)
 
     spark.stop()
